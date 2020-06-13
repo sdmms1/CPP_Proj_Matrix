@@ -71,13 +71,13 @@ public:
         }
 
     }
-    N_Matrix(const Mat img):N_Matrix(img.rows, img.cols){
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < col; j++){
-                matrix[i*col+j] = img.at<uchar>(i, j);
-            }
-        }
-    }
+   N_Matrix(const Mat img):N_Matrix(img.rows, img.cols){
+       for(int i = 0; i < row; i++){
+           for(int j = 0; j < col; j++){
+               matrix[i*col+j] = img.at<uchar>(i, j);
+           }
+       }
+   }
 
     ~N_Matrix(){
         delete[] matrix;
@@ -230,20 +230,22 @@ public:
                 T res = 0;
                 for (int k = 0; k < core.row; ++k) {
                     for (int l = 0; l < core.col; ++l) {
-                        res += rot.matrix[k*core.col+l]*augment[(i+k)*col_cnt+j+l];
+                        int b_row = i+k;
+                        int b_col = j+l;
+                        res += core.matrix[k*core.col+l]*augment[(i+k)*col_cnt+j+l];
                     }
                 }
-                result.matrix[i*row+j] = res;
+                result.matrix[i*col+j] = res;
             }
         }
-        delete [] augment;
         return result;
     }
 
     void printMatrix(){
         for (int i = 0; i < row; ++i) {
             for (int j = 0; j < col; ++j) {
-                cout<<(int)matrix[i*col+j]<<" ";
+                int a = matrix[i*col+j];
+                cout<<matrix[i*col+j]<<" ";
             }
             cout<<endl;
         }
@@ -650,15 +652,15 @@ public:
         return result;
     }
 
-    Mat toOpenCVMat(){
-        Mat img{row,col,CV_8U, Scalar::all(0)};
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < col; j++){
-                img.at<uchar>(i, j) = matrix[i*col+j];
-            }
-        }
-        return img;
-    }
+   Mat toOpenCVMat(){
+       Mat img{row,col,CV_8U, Scalar::all(0)};
+       for(int i = 0; i < row; i++){
+           for(int j = 0; j < col; j++){
+               img.at<uchar>(i, j) = matrix[i*col+j];
+           }
+       }
+       return img;
+   }
 };
 
 #endif //PROJECT_N_MATRIX_HPP
