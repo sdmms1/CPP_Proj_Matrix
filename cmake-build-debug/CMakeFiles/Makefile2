@@ -44,16 +44,17 @@ RM = /cygdrive/c/Users/sdmms/AppData/Local/JetBrains/CLion2020.1/cygwin_cmake/bi
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /cygdrive/c/Users/sdmms/Desktop/cs/cpp/CPP_Proj_Matrix
+CMAKE_SOURCE_DIR = /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /cygdrive/c/Users/sdmms/Desktop/cs/cpp/CPP_Proj_Matrix/cmake-build-debug
+CMAKE_BINARY_DIR = /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
 all: CMakeFiles/CPP_Proj_Matrix.dir/all
+all: CMakeFiles/image_demo.dir/all
 
 .PHONY : all
 
@@ -64,6 +65,7 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/CPP_Proj_Matrix.dir/clean
+clean: CMakeFiles/image_demo.dir/clean
 
 .PHONY : clean
 
@@ -74,14 +76,14 @@ clean: CMakeFiles/CPP_Proj_Matrix.dir/clean
 CMakeFiles/CPP_Proj_Matrix.dir/all:
 	$(MAKE) -f CMakeFiles/CPP_Proj_Matrix.dir/build.make CMakeFiles/CPP_Proj_Matrix.dir/depend
 	$(MAKE) -f CMakeFiles/CPP_Proj_Matrix.dir/build.make CMakeFiles/CPP_Proj_Matrix.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cygdrive/c/Users/sdmms/Desktop/cs/cpp/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target CPP_Proj_Matrix"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target CPP_Proj_Matrix"
 .PHONY : CMakeFiles/CPP_Proj_Matrix.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/CPP_Proj_Matrix.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/sdmms/Desktop/cs/cpp/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/CPP_Proj_Matrix.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/sdmms/Desktop/cs/cpp/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/CPP_Proj_Matrix.dir/rule
 
 # Convenience name for target.
@@ -93,6 +95,33 @@ CPP_Proj_Matrix: CMakeFiles/CPP_Proj_Matrix.dir/rule
 CMakeFiles/CPP_Proj_Matrix.dir/clean:
 	$(MAKE) -f CMakeFiles/CPP_Proj_Matrix.dir/build.make CMakeFiles/CPP_Proj_Matrix.dir/clean
 .PHONY : CMakeFiles/CPP_Proj_Matrix.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/image_demo.dir
+
+# All Build rule for target.
+CMakeFiles/image_demo.dir/all:
+	$(MAKE) -f CMakeFiles/image_demo.dir/build.make CMakeFiles/image_demo.dir/depend
+	$(MAKE) -f CMakeFiles/image_demo.dir/build.make CMakeFiles/image_demo.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles --progress-num=3,4 "Built target image_demo"
+.PHONY : CMakeFiles/image_demo.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/image_demo.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/image_demo.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/image_demo.dir/rule
+
+# Convenience name for target.
+image_demo: CMakeFiles/image_demo.dir/rule
+
+.PHONY : image_demo
+
+# clean rule for target.
+CMakeFiles/image_demo.dir/clean:
+	$(MAKE) -f CMakeFiles/image_demo.dir/build.make CMakeFiles/image_demo.dir/clean
+.PHONY : CMakeFiles/image_demo.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

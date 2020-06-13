@@ -48,10 +48,10 @@ RM = /cygdrive/c/Users/sdmms/AppData/Local/JetBrains/CLion2020.1/cygwin_cmake/bi
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /cygdrive/c/Users/sdmms/Desktop/cs/cpp/CPP_Proj_Matrix
+CMAKE_SOURCE_DIR = /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /cygdrive/c/Users/sdmms/Desktop/cs/cpp/CPP_Proj_Matrix/cmake-build-debug
+CMAKE_BINARY_DIR = /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/sdmms/Desktop/cs/cpp/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles /cygdrive/c/Users/sdmms/Desktop/cs/cpp/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/sdmms/Desktop/cs/cpp/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -123,6 +123,46 @@ CPP_Proj_Matrix/fast:
 	$(MAKE) -f CMakeFiles/CPP_Proj_Matrix.dir/build.make CMakeFiles/CPP_Proj_Matrix.dir/build
 .PHONY : CPP_Proj_Matrix/fast
 
+#=============================================================================
+# Target rules for targets named image_demo
+
+# Build rule for target.
+image_demo: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 image_demo
+.PHONY : image_demo
+
+# fast build rule for target.
+image_demo/fast:
+	$(MAKE) -f CMakeFiles/image_demo.dir/build.make CMakeFiles/image_demo.dir/build
+.PHONY : image_demo/fast
+
+image_test.o: image_test.cpp.o
+
+.PHONY : image_test.o
+
+# target to build an object file
+image_test.cpp.o:
+	$(MAKE) -f CMakeFiles/image_demo.dir/build.make CMakeFiles/image_demo.dir/image_test.cpp.o
+.PHONY : image_test.cpp.o
+
+image_test.i: image_test.cpp.i
+
+.PHONY : image_test.i
+
+# target to preprocess a source file
+image_test.cpp.i:
+	$(MAKE) -f CMakeFiles/image_demo.dir/build.make CMakeFiles/image_demo.dir/image_test.cpp.i
+.PHONY : image_test.cpp.i
+
+image_test.s: image_test.cpp.s
+
+.PHONY : image_test.s
+
+# target to generate assembly for a file
+image_test.cpp.s:
+	$(MAKE) -f CMakeFiles/image_demo.dir/build.make CMakeFiles/image_demo.dir/image_test.cpp.s
+.PHONY : image_test.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -157,8 +197,12 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... CPP_Proj_Matrix"
 	@echo "... edit_cache"
+	@echo "... CPP_Proj_Matrix"
+	@echo "... image_demo"
+	@echo "... image_test.o"
+	@echo "... image_test.i"
+	@echo "... image_test.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

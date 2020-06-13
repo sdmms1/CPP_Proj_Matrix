@@ -6,5 +6,5 @@ CXX_FLAGS = -g   -std=gnu++14
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix -I/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/G:/2020Spring/CS205/LAB/opencv_4_2/mingw_opencv/include/opencv2 
 

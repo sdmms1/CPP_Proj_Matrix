@@ -1,18 +1,9 @@
-C:\Users\sdmms\AppData\Local\JetBrains\CLion2020.1\cygwin_cmake\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /cygdrive/c/Users/sdmms/Desktop/cs/cpp/CPP_Proj_Matrix
--- The C compiler identification is GNU 9.3.0
--- The CXX compiler identification is GNU 9.3.0
--- Check for working C compiler: /usr/bin/cc
--- Check for working C compiler: /usr/bin/cc -- works
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Detecting C compile features
--- Detecting C compile features - done
--- Check for working CXX compiler: /usr/bin/c++.exe
--- Check for working CXX compiler: /usr/bin/c++.exe -- works
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Detecting CXX compile features
--- Detecting CXX compile features - done
+C:\Users\sdmms\AppData\Local\JetBrains\CLion2020.1\cygwin_cmake\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix
+-- Found OpenCV: /usr (found version "3.4.1") 
+-- OpenCV library status:
+--     version: 3.4.1
+--     libraries: opencv_aruco;opencv_bgsegm;opencv_bioinspired;opencv_calib3d;opencv_ccalib;opencv_core;opencv_datasets;opencv_dpm;opencv_face;opencv_features2d;opencv_flann;opencv_freetype;opencv_fuzzy;opencv_hdf;opencv_hfs;opencv_highgui;opencv_img_hash;opencv_imgcodecs;opencv_imgproc;opencv_line_descriptor;opencv_ml;opencv_objdetect;opencv_optflow;opencv_phase_unwrapping;opencv_photo;opencv_plot;opencv_reg;opencv_rgbd;opencv_saliency;opencv_shape;opencv_stereo;opencv_stitching;opencv_structured_light;opencv_superres;opencv_surface_matching;opencv_tracking;opencv_video;opencv_videoio;opencv_videostab;opencv_ximgproc;opencv_xobjdetect;opencv_xphoto
+--     include path: /usr/include;/usr/include/opencv
 -- Configuring done
 -- Generating done
--- Build files have been written to: /cygdrive/c/Users/sdmms/Desktop/cs/cpp/CPP_Proj_Matrix/cmake-build-debug
+-- Build files have been written to: /cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug

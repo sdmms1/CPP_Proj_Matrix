@@ -17,7 +17,19 @@ struct SizeException:public exception{
         else if (type == 2) return "The size of the two matrices don't support the subtract operation";
         else if (type == 3) return "The size of the two matrices don't support the element-wise multiply operation";
         else if (type == 5) return "The cross product in n-dimension space should provide n-1 vectors";
-        else return "The size of the two matrices don't support the multiply operation";
+        else if(type==4) return "The size of the two matrices don't support the multiply operation";
+        else if(type==6) return "The size you provide does not match for reshape operation";
+        else if(type==7) return "The matrix size does not support getting determinant operation";
+        else if(type==8) return "The matrix size does not support getting trace operation";
+        else if(type==9) return "The matrix size does not support cross product operation (need row-column==1";
+    }
+};
+
+struct IndexOutOfRange:public exception{
+    int type;
+    explicit IndexOutOfRange(int t){type=t;}
+    const char* what() const throw(){
+        return "Exception! The row (or column) index you provide is out of range!";
     }
 };
 
@@ -101,8 +113,8 @@ public:
         }
     }
 
-    template <typename T1>
-    N_Matrix scalar_product (T1 val) const{
+    //template <typename T1>
+    N_Matrix scalar_product (T val) const{
         T* result = new T[col*row];
         for (int i = 0; i < col*row; ++i) {
             result[i] = val*matrix[i];
@@ -110,8 +122,8 @@ public:
         return N_Matrix {row,col,result};
     }
 
-    template <typename T1>
-    N_Matrix operator / (T1 val){
+    //template <typename T1>
+    N_Matrix operator / (T val){
         T* result = new T[col*row];
         for (int i = 0; i < col*row; ++i) {
             result[i] = matrix[i]/val;
@@ -226,6 +238,358 @@ public:
                 cout<<matrix[i*col+j]<<" ";
             }
             cout<<endl;
+        }
+    }
+
+
+    T getMaxByRow(int rowNum){
+        try {
+            if(rowNum<0||rowNum>row-1) throw IndexOutOfRange(1);
+            T max = matrix[col * rowNum];
+            for (int i = 0; i < col; i++) {
+                if (matrix[col * rowNum + i] > max)
+                    max = matrix[col * rowNum + i];
+            }
+            return max;
+        }catch(IndexOutOfRange& e){
+            cout<<e.what()<<endl;
+        }
+    }
+
+    T getMaxByCol(int colNum){
+        try {
+            if(colNum<0||colNum>col-1) throw IndexOutOfRange(1);
+            T max = matrix[colNum];
+            for (int i = 0; i < row; i++) {
+                if (matrix[col * i + colNum] > max)
+                    max = matrix[col * i + colNum];
+            }
+            return max;
+        }catch(IndexOutOfRange& e){
+            cout<<e.what()<<endl;
+        }
+    }
+
+    T getMax(){
+        T max=matrix[0];
+        for(int i=0;i<row*col;i++){
+            if(matrix[i]>max)
+                max=matrix[i];
+        }
+        return max;
+    }
+
+    T getMinByRow(int rowNum){
+        try {
+            if(rowNum<0||rowNum>row-1) throw IndexOutOfRange(1);
+            T max = matrix[col * rowNum];
+            for (int i = 0; i < col; i++) {
+                if (matrix[col * rowNum + i] > max) {}
+                else
+                    max = matrix[col * rowNum + i];
+            }
+            return max;
+        }catch(IndexOutOfRange& e){
+            cout<<e.what()<<endl;
+        }
+    }
+
+    T getMinByCol(int colNum){
+        try {
+            if(colNum<0||colNum>col-1) throw IndexOutOfRange(1);
+            T max = matrix[colNum];
+            for (int i = 0; i < row; i++) {
+                if (matrix[col * i + colNum] > max) {}
+                else
+                    max = matrix[col * i + colNum];
+            }
+            return max;
+        }catch(IndexOutOfRange& e){
+            cout<<e.what()<<endl;
+        }
+    }
+
+    T getMin(){
+        T max=matrix[0];
+        for(int i=0;i<row*col;i++){
+            if(matrix[i]>max){}
+            else
+                max=matrix[i];
+        }
+        return max;
+    }
+
+    T getSumByRow(int rowNum){
+        try {
+            if(rowNum<0||rowNum>row-1) throw IndexOutOfRange(1);
+            T sum = matrix[col * rowNum];
+            for (int i = 1; i < col; i++) {
+                sum = sum + matrix[col * rowNum + i];
+            }
+            return sum;
+        }catch(IndexOutOfRange& e){
+            cout<<e.what()<<endl;
+        }
+    }
+
+    T getSumByCol(int colNum){
+        try {
+            if(colNum<0||colNum>col-1) throw IndexOutOfRange(1);
+            T sum = matrix[colNum];
+            for (int i = 1; i < row; i++) {
+                sum = sum + matrix[col * i + colNum];
+            }
+            return sum;
+        }
+        catch(IndexOutOfRange& e){
+            cout<<e.what()<<endl;
+        }
+    }
+
+    T getSum(){
+        T sum=matrix[0];
+        for(int i=1;i<row*col;i++){
+            sum=sum+matrix[i];
+        }
+        return sum;
+    }
+
+    T getAvgByRow(int rowNum){
+        return getSumByRow(rowNum)/col;
+    }
+
+    T getAvgByCol(int colNum){
+        return getSumByCol(colNum)/row;
+    }
+
+    T getAvg(){
+        return getSum()/(row*col);
+    }
+
+    void reShape(int newRow,int newCol){
+        try {
+            if(newRow*newCol!=row*col) throw SizeException(6);
+            if(newRow<1||newCol<1) throw IndexOutOfRange(1);
+            T *newmatrix = new T[newRow * newCol];
+            for (int i = 0; i < newRow; i++) {
+                for (int j = 0; j < newCol; j++) {
+                    int index = j * newRow + i + 1;
+                    int newi = index % row == 0 ? row - 1 : index % row - 1;
+                    int newj = index % row == 0 ? index / row - 1 : index / row;
+                    newmatrix[i * newCol + j] = matrix[newi * col + newj];
+                }
+            }
+            row = newRow;
+            col = newCol;
+            setMatrix(newmatrix);
+        }catch(SizeException& e){
+            cout<<e.what()<<endl;
+        }catch(IndexOutOfRange& e){
+            cout<<e.what()<<endl;
+        }
+    }
+
+    N_Matrix sliceByRow(int startRow,int endRow){
+        try {
+            if(startRow<0||endRow>row-1||endRow-startRow<0) throw IndexOutOfRange(1);
+            int newRow = endRow - startRow + 1;
+            T *temp = new T[newRow * col];
+            for (int i = 0; i < newRow; i++) {
+                for (int j = 0; j < col; j++) {
+                    temp[i * col + j] = matrix[(startRow + i) * col + j];
+                }
+            }
+            return N_Matrix(newRow, col, temp);
+        }catch(IndexOutOfRange& e){
+            cout<<e.what()<<endl;
+        }
+        
+    }
+
+    N_Matrix sliceByCol(int startCol,int endCol){
+        try {
+            if(startCol<0||endCol>col-1||endCol-startCol<0) throw IndexOutOfRange(1);
+            int newCol = endCol - startCol + 1;
+            T *temp = new T[row * newCol];
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < newCol; j++) {
+                    temp[i * newCol + j] = matrix[i * col + j + startCol];
+                }
+            }
+            return N_Matrix(row, newCol, temp);
+        }catch(IndexOutOfRange& e){
+            cout<<e.what()<<endl;
+        }
+        
+    }
+
+    T getDet(){
+        try {
+            if(col!=row) throw SizeException(7);
+            if (col == 1) {
+                return matrix[0];
+            } else if (col == 2) {
+                return matrix[0] * matrix[3] - matrix[1] * matrix[2];
+            }
+            T det = 0;
+            T *tempArr = new T[(col - 1) * (col - 1)];
+            for (int t = 0; t < col; t++) {
+                for (int i = 0; i < col - 1; i++) {
+                    for (int j = 0; j < t; j++) {
+                        tempArr[(col - 1) * i + j] = matrix[col * (i + 1) + j];
+                    }
+                    for (int j = t; j < col - 1; j++) {
+                        tempArr[(col - 1) * i + j] = matrix[col * (i + 1) + j + 1];
+                    }
+                }
+                N_Matrix temp(col - 1, col - 1, tempArr);
+                det = matrix[t] * temp.getDet() * (t % 2 == 0 ? 1 : -1) + det;
+
+            }
+            delete[] tempArr;
+            return det;
+        }catch(SizeException& e){
+            cout<<e.what()<<endl;
+        }
+    }
+	
+	bool isInvertible(){
+		return getDet()==0?false:true;
+	}
+	
+	N_Matrix getInverse(){
+
+            N_Matrix nmatrix(col, col);
+            T *tempArr = new T[(col - 1) * (col - 1)];
+            for (int i = 0; i < col; i++) {
+                for (int j = 0; j < col; j++) {
+                    for (int m = 0; m < i; m++) {
+                        for (int n = 0; n < j; n++) {
+                            tempArr[(col - 1) * m + n] = matrix[col * m + n];
+                        }
+                        for (int n = j; n < col - 1; n++) {
+                            tempArr[(col - 1) * m + n] = matrix[col * m + n + 1];
+                        }
+                    }
+                    for (int m = i; m < col - 1; m++) {
+                        for (int n = 0; n < j; n++) {
+                            tempArr[(col - 1) * m + n] = matrix[col * (m + 1) + n];
+                        }
+                        for (int n = j; n < col - 1; n++) {
+                            tempArr[(col - 1) * m + n] = matrix[col * (m + 1) + n + 1];
+                        }
+                    }
+                    N_Matrix temp(col - 1, col - 1, tempArr);
+                    nmatrix.modifyVal(j, i, temp.getDet() * ((i + j) % 2 == 0 ? 1 : -1));
+                }
+            }
+            delete[] tempArr;
+            return nmatrix / getDet();
+
+	}
+	
+	N_Matrix QRdecomposition(){
+		N_Matrix nmatrixArr[col];
+		nmatrixArr[0]=sliceByCol(0,0);
+		for(int i=1;i<col;i++){
+			nmatrixArr[i]=sliceByCol(i,i);
+			N_Matrix temp=nmatrixArr[0].scalar_product((nmatrixArr[0].transposition()*nmatrixArr[i]/((nmatrixArr[0].transposition()*nmatrixArr[0]).matrix[0])).matrix[0]);
+			for(int j=1;j<i;j++){
+				temp=temp+nmatrixArr[j].scalar_product((nmatrixArr[j].transposition()*nmatrixArr[i]/((nmatrixArr[j].transposition()*nmatrixArr[j]).matrix[0])).matrix[0]);
+			}
+			nmatrixArr[i]=nmatrixArr[i]-temp;
+		}
+		for(int i=0;i<col;i++){
+			T sum=nmatrixArr[i].matrix[0]*nmatrixArr[i].matrix[0];
+			for(int j=1;j<col;j++){
+				sum=sum+nmatrixArr[i].matrix[j]*nmatrixArr[i].matrix[j];
+			}
+			sum=sqrt(sum);
+			for(int j=0;j<col;j++){
+				nmatrixArr[i].modifyVal(j,0,nmatrixArr[i].matrix[j]/sum);
+			}
+		}
+		N_Matrix Q(col,col);
+		for(int i=0;i<col;i++){
+			for(int j=0;j<col;j++){
+				Q.matrix[i*col+j]=nmatrixArr[j].matrix[i];
+			}
+		}
+		return Q;	
+	}
+	
+	T sqrt(T c){
+		T ans=c;
+		while(ans*ans-c>0.00001||c-ans*ans>0.00001){
+			ans=(c/ans+ans)/2;
+		}
+		return ans;
+	}
+	
+	N_Matrix getEigenValue(){
+
+		T det=getDet();
+		N_Matrix nmatrix=*this;
+		int i=0;
+		while(i<1000){
+			N_Matrix Q=nmatrix.QRdecomposition();
+			nmatrix=Q.transposition()*nmatrix*Q;
+			T product=nmatrix.matrix[0];
+			for(int i=1;i<col;i++){
+				product=product*nmatrix.matrix[i*col+i];
+			}
+			if(det-product>0.0001||product-det>0.0001){(i++);}
+			else{break;}
+		}
+		return nmatrix;
+	}
+
+	N_Matrix getEigenVector(){
+        N_Matrix nmatrix=getEigenValue();
+        for(int i=0;i<col;i++){
+            for(int j=0;j<col;j++){
+                if(i!=j){
+                    nmatrix.matrix[i*col+j]=0;
+                }
+            }
+        }
+        return (*this-nmatrix).getInverse();
+    }
+
+    T getTrace(){
+        try {
+            if(col!=row) throw SizeException(8);
+            T trace = matrix[0];
+            for (int i = 1; i < col; i++) {
+                trace = trace + matrix[i * col + i];
+            }
+            return trace;
+        }catch(SizeException& e){
+            cout<<e.what()<<endl;
+        }
+    }
+
+    N_Matrix crossProduct(){
+        try {
+            if(row-col!=1) throw  SizeException(9);
+            T *vector = new T[row];
+            T *tempArr = new T[col * col];
+            for (int t = 0; t < row; t++) {
+                for (int j = 0; j < col; j++) {
+                    for (int i = 0; i < t; i++) {
+                        tempArr[(col) * i + j] = matrix[col * i + j];
+                    }
+                    for (int i = t; i < col; i++) {
+                        tempArr[(col) * i + j] = matrix[col * (i + 1) + j];
+                    }
+                }
+                N_Matrix temp(col, col, tempArr);
+                vector[t] = temp.getDet() * (t % 2 == 0 ? 1 : -1);
+
+            }
+            return N_Matrix(row, 1, vector);
+        }catch(SizeException& e){
+            cout<<e.what()<<endl;
         }
     }
 };
