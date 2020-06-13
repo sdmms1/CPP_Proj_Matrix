@@ -96,11 +96,11 @@ public:
     N_Matrix operator + (const N_Matrix<T1>& other) const{
         try{
             if ((this->col != other.col) | (this->row != other.row)) throw SizeException(1);
-            T * result = new T[col*row];
+            N_Matrix result {row,col};
             for (int i = 0; i < col*row; ++i) {
-                result[i] = matrix[i] + other.matrix[i];
+                result.matrix[i] = matrix[i] + other.matrix[i];
             }
-            return N_Matrix{row,col,result};
+            return result;
         }catch (SizeException& e){
             cout<<e.what();
         }
@@ -110,61 +110,61 @@ public:
     N_Matrix operator - (const N_Matrix<T1>& other) const{
         try{
             if ((this->col != other.col) | (this->row != other.row)) throw SizeException(2);
-            T * result = new T[col*row];
+            N_Matrix result {row,col};
             for (int i = 0; i < col*row; ++i) {
-                result[i] = matrix[i] - other.matrix[i];
+                result.matrix[i] = matrix[i] - other.matrix[i];
             }
-            return N_Matrix{row,col,result};
+            return result;
         }catch (SizeException& e){
             cout<<e.what();
         }
     }
 
-    //template <typename T1>
+//    template <typename T1>
     N_Matrix scalar_product (T val) const{
-        T* result = new T[col*row];
+        N_Matrix result {row,col};
         for (int i = 0; i < col*row; ++i) {
-            result[i] = val*matrix[i];
+            result.matrix[i] = val*matrix[i];
         }
-        return N_Matrix {row,col,result};
+        return result;
     }
 
     //template <typename T1>
     N_Matrix operator / (T val){
-        T* result = new T[col*row];
+        N_Matrix result {row,col};
         for (int i = 0; i < col*row; ++i) {
-            result[i] = matrix[i]/val;
+            result.matrix[i] = matrix[i]/val;
         }
-        return N_Matrix {row,col,result};
+        return result;
     }
 
     N_Matrix transposition(){
-        T * result = new T[col*row];
+        N_Matrix result {col,row};
         for (int i = 0; i < row; ++i) {
             for (int j = 0; j < col; ++j) {
-                result[j*row+i] = matrix[i*col+j];
+                result.matrix[j*row+i] = matrix[i*col+j];
             }
         }
-        return N_Matrix{col,row,result};
+        return result;
     }
 
     N_Matrix conjugation(){
-        T * result = new T[col*row];
+        N_Matrix result {row,col};
         for (int i = 0; i < col*row; ++i) {
-            result[i] = conj(matrix[i]);
+            result.matrix[i] = conj(matrix[i]);
         }
-        return N_Matrix {row,col,result};
+        return result;
     }
 
     template <typename T1>
     N_Matrix element_wise_mult(const N_Matrix<T1>& matrix2){
         try{
             if ((row != matrix2.row)|(col != matrix2.col)) throw SizeException(3);
-            T * result = new T [col*row];
+            N_Matrix result {row,col};
             for (int i = 0; i < row*col; ++i) {
-                result[i] = matrix[i] * matrix2.matrix[i];
+                result.matrix[i] = matrix[i] * matrix2.matrix[i];
             }
-            return N_Matrix{row,col,result};
+            return result;
         }catch (SizeException& e){
             cout<<e.what();
         }
@@ -174,17 +174,17 @@ public:
     N_Matrix operator * (const N_Matrix<T1>& other) const {
         try{
             if (col != other.row) throw SizeException(4);
-            T * result = new T [other.col*row];
+            N_Matrix result {row,other.col};
             for (int i = 0; i < row; ++i) {
                 for (int j = 0; j < other.col; ++j) {
                     T res = 0;
                     for (int k = 0; k < col; ++k) {
                         res = res+ matrix[i*col+k] * other.matrix[j+k*other.col];
                     }
-                    result[i*other.col+j] = res;
+                    result.matrix[i*other.col+j] = res;
                 }
             }
-            return N_Matrix{row,other.col,result};
+            return result;
         }catch (SizeException& e){
             cout<<e.what();
         }
@@ -202,47 +202,48 @@ public:
     }
 
     N_Matrix rotate(){
-        T * result = new T [row*col];
+        N_Matrix result {row,col};
         for (int i = 0; i < row*col; ++i) {
-            result[i] = matrix[col*row-1-i];
+            result.matrix[i] = matrix[col*row-1-i];
         }
-        return N_Matrix{row,col,result};
+        return result;
     }
 
     template <typename T1>
     N_Matrix convolution(N_Matrix<T1> & core){
-        int row_cnt = row+2*core.row-2;
-        int col_cnt = col+2*core.col-2;
+        int row_cnt = row+(core.row/2)*2;
+        int col_cnt = col+(core.col/2)*2;
         T * augment = new T [row_cnt*col_cnt];
         //rotate 180
-        N_Matrix rot = core.rotate();
+        N_Matrix<T1> rot = core.rotate();
         //make up 0
         for (int i = 0; i < row_cnt; ++i) {
             for (int j = 0; j < col_cnt; ++j) {
-                if (i<core.row-1 | i>=core.row-1+row | j<core.col-1 | j>=core.col-1+col) augment[i * col_cnt + j] = 0;
-                else augment[i * col_cnt + j] = matrix[(i - core.row + 1) * col + (j - core.col + 1)];
+                if (i<core.row/2 | i>=core.row/2+row | j<core.col/2 | j>=core.col/2+col) augment[i * col_cnt + j] = 0;
+                else augment[i * col_cnt + j] = matrix[(i - core.row/2) * col + (j - core.col/2)];
             }
         }
-        T * result = new T [(row+core.row-1)*(col+core.col-1)];
-        for (int i = 0; i < row+core.row-1; ++i) {
-            for (int j = 0; j < col+core.col-1; ++j) {
+
+        N_Matrix result {row,col};
+        for (int i = 0; i < row; ++i) {
+            for (int j = 0; j < col; ++j) {
                 T res = 0;
                 for (int k = 0; k < core.row; ++k) {
                     for (int l = 0; l < core.col; ++l) {
                         res += rot.matrix[k*core.col+l]*augment[(i+k)*col_cnt+j+l];
                     }
                 }
-                result[i*(row+core.row-1)+j] = res;
+                result.matrix[i*row+j] = res;
             }
         }
-        delete augment;
-        return N_Matrix{row+core.row-1,col+core.col-1,result};
+        delete [] augment;
+        return result;
     }
 
     void printMatrix(){
         for (int i = 0; i < row; ++i) {
             for (int j = 0; j < col; ++j) {
-                cout<<matrix[i*col+j]<<" ";
+                cout<<(int)matrix[i*col+j]<<" ";
             }
             cout<<endl;
         }
@@ -410,7 +411,7 @@ public:
         }catch(IndexOutOfRange& e){
             cout<<e.what()<<endl;
         }
-        
+
     }
 
     N_Matrix sliceByCol(int startCol,int endCol){
@@ -427,7 +428,7 @@ public:
         }catch(IndexOutOfRange& e){
             cout<<e.what()<<endl;
         }
-        
+
     }
 
     T getDet(){
@@ -459,100 +460,100 @@ public:
             cout<<e.what()<<endl;
         }
     }
-	
-	bool isInvertible(){
-		return getDet() != 0;
-	}
-	
-	N_Matrix getInverse(){
 
-            N_Matrix nmatrix(col, col);
-            T *tempArr = new T[(col - 1) * (col - 1)];
-            for (int i = 0; i < col; i++) {
-                for (int j = 0; j < col; j++) {
-                    for (int m = 0; m < i; m++) {
-                        for (int n = 0; n < j; n++) {
-                            tempArr[(col - 1) * m + n] = matrix[col * m + n];
-                        }
-                        for (int n = j; n < col - 1; n++) {
-                            tempArr[(col - 1) * m + n] = matrix[col * m + n + 1];
-                        }
+    bool isInvertible(){
+        return getDet() != 0;
+    }
+
+    N_Matrix getInverse(){
+
+        N_Matrix nmatrix(col, col);
+        T *tempArr = new T[(col - 1) * (col - 1)];
+        for (int i = 0; i < col; i++) {
+            for (int j = 0; j < col; j++) {
+                for (int m = 0; m < i; m++) {
+                    for (int n = 0; n < j; n++) {
+                        tempArr[(col - 1) * m + n] = matrix[col * m + n];
                     }
-                    for (int m = i; m < col - 1; m++) {
-                        for (int n = 0; n < j; n++) {
-                            tempArr[(col - 1) * m + n] = matrix[col * (m + 1) + n];
-                        }
-                        for (int n = j; n < col - 1; n++) {
-                            tempArr[(col - 1) * m + n] = matrix[col * (m + 1) + n + 1];
-                        }
+                    for (int n = j; n < col - 1; n++) {
+                        tempArr[(col - 1) * m + n] = matrix[col * m + n + 1];
                     }
-                    N_Matrix temp(col - 1, col - 1, tempArr);
-                    nmatrix.modifyVal(j, i, temp.getDet() * ((i + j) % 2 == 0 ? 1 : -1));
                 }
+                for (int m = i; m < col - 1; m++) {
+                    for (int n = 0; n < j; n++) {
+                        tempArr[(col - 1) * m + n] = matrix[col * (m + 1) + n];
+                    }
+                    for (int n = j; n < col - 1; n++) {
+                        tempArr[(col - 1) * m + n] = matrix[col * (m + 1) + n + 1];
+                    }
+                }
+                N_Matrix temp(col - 1, col - 1, tempArr);
+                nmatrix.modifyVal(j, i, temp.getDet() * ((i + j) % 2 == 0 ? 1 : -1));
             }
-            delete[] tempArr;
-            return nmatrix / getDet();
+        }
+        delete[] tempArr;
+        return nmatrix / getDet();
 
-	}
-	
-	N_Matrix QRdecomposition(){
-		N_Matrix nmatrixArr[col];
-		nmatrixArr[0]=sliceByCol(0,0);
-		for(int i=1;i<col;i++){
-			nmatrixArr[i]=sliceByCol(i,i);
-			N_Matrix temp=nmatrixArr[0].scalar_product((nmatrixArr[0].transposition()*nmatrixArr[i]/((nmatrixArr[0].transposition()*nmatrixArr[0]).matrix[0])).matrix[0]);
-			for(int j=1;j<i;j++){
-				temp=temp+nmatrixArr[j].scalar_product((nmatrixArr[j].transposition()*nmatrixArr[i]/((nmatrixArr[j].transposition()*nmatrixArr[j]).matrix[0])).matrix[0]);
-			}
-			nmatrixArr[i]=nmatrixArr[i]-temp;
-		}
-		for(int i=0;i<col;i++){
-			T sum=nmatrixArr[i].matrix[0]*nmatrixArr[i].matrix[0];
-			for(int j=1;j<col;j++){
-				sum=sum+nmatrixArr[i].matrix[j]*nmatrixArr[i].matrix[j];
-			}
-			sum=sqrt(sum);
-			for(int j=0;j<col;j++){
-				nmatrixArr[i].modifyVal(j,0,nmatrixArr[i].matrix[j]/sum);
-			}
-		}
-		N_Matrix Q(col,col);
-		for(int i=0;i<col;i++){
-			for(int j=0;j<col;j++){
-				Q.matrix[i*col+j]=nmatrixArr[j].matrix[i];
-			}
-		}
-		return Q;	
-	}
-	
-	T sqrt(T c){
-		T ans=c;
-		while(ans*ans-c>0.00001||c-ans*ans>0.00001){
-			ans=(c/ans+ans)/2;
-		}
-		return ans;
-	}
-	
-	N_Matrix getEigenValue(){
+    }
 
-		T det=getDet();
-		N_Matrix nmatrix=getHessnberg();
-		int i=0;
-		while(i<1000){
+    N_Matrix QRdecomposition(){
+        N_Matrix nmatrixArr[col];
+        nmatrixArr[0]=sliceByCol(0,0);
+        for(int i=1;i<col;i++){
+            nmatrixArr[i]=sliceByCol(i,i);
+            N_Matrix temp=nmatrixArr[0].scalar_product((nmatrixArr[0].transposition()*nmatrixArr[i]/((nmatrixArr[0].transposition()*nmatrixArr[0]).matrix[0])).matrix[0]);
+            for(int j=1;j<i;j++){
+                temp=temp+nmatrixArr[j].scalar_product((nmatrixArr[j].transposition()*nmatrixArr[i]/((nmatrixArr[j].transposition()*nmatrixArr[j]).matrix[0])).matrix[0]);
+            }
+            nmatrixArr[i]=nmatrixArr[i]-temp;
+        }
+        for(int i=0;i<col;i++){
+            T sum=nmatrixArr[i].matrix[0]*nmatrixArr[i].matrix[0];
+            for(int j=1;j<col;j++){
+                sum=sum+nmatrixArr[i].matrix[j]*nmatrixArr[i].matrix[j];
+            }
+            sum=sqrt(sum);
+            for(int j=0;j<col;j++){
+                nmatrixArr[i].modifyVal(j,0,nmatrixArr[i].matrix[j]/sum);
+            }
+        }
+        N_Matrix Q(col,col);
+        for(int i=0;i<col;i++){
+            for(int j=0;j<col;j++){
+                Q.matrix[i*col+j]=nmatrixArr[j].matrix[i];
+            }
+        }
+        return Q;
+    }
+
+    T sqrt(T c){
+        T ans=c;
+        while(ans*ans-c>0.00001||c-ans*ans>0.00001){
+            ans=(c/ans+ans)/2;
+        }
+        return ans;
+    }
+
+    N_Matrix getEigenValue(){
+
+        T det=getDet();
+        N_Matrix nmatrix=getHessnberg();
+        int i=0;
+        while(i<1000){
             T product=nmatrix.matrix[0];
             for(int i=1;i<col;i++){
                 product=product*nmatrix.matrix[i*col+i];
             }
             if(det-product>0.0001||product-det>0.0001){(i++);}
             else{break;}
-			N_Matrix Q=nmatrix.QRdecomposition();
-			nmatrix=Q.transposition()*nmatrix*Q;
+            N_Matrix Q=nmatrix.QRdecomposition();
+            nmatrix=Q.transposition()*nmatrix*Q;
 
-		}
-		return nmatrix;
-	}
+        }
+        return nmatrix;
+    }
 
-	N_Matrix getEigenVector(){
+    N_Matrix getEigenVector(){
         N_Matrix nmatrix=getEigenValue();
         for(int i=0;i<col;i++){
             for(int j=0;j<col;j++){
@@ -600,36 +601,36 @@ public:
             cout<<e.what()<<endl;
         }
     }
-	
-	N_Matrix getHessnberg(){
-		N_Matrix result=*this;
-		N_Matrix x(row,1);
-		N_Matrix w(row,1);
-		N_Matrix v(row,1);
-		N_Matrix H(row,col);
-		for(int t=0;t<col-2;t++){
-			for(int i=0;i<=t;i++){
-				x.modifyVal(i,0,0);
-			}
-			
-			for(int i=t+1;i<row;i++){
-				x.modifyVal(i,0,result.matrix[i*col+t]);
-			}
-			T length=x.matrix[t+1]*x.matrix[t+1];
-			for(int i=t+2;i<row;i++){
-				length=length+x.matrix[i]*x.matrix[i];
-			}
-			length=sqrt(length);
-			for(int i=0;i<row;i++){
-				if(i!=t+1){
-					w.modifyVal(i,0,0);
-				}else{
-					w.modifyVal(i,0,length);
-				}
-			}
-			if(x.matrix[0]>0) x=x.scalar_product(-1);
-			v=w+x;
-			if(v.getLength()-0>0.0001) {
+
+    N_Matrix getHessnberg(){
+        N_Matrix result=*this;
+        N_Matrix x(row,1);
+        N_Matrix w(row,1);
+        N_Matrix v(row,1);
+        N_Matrix H(row,col);
+        for(int t=0;t<col-2;t++){
+            for(int i=0;i<=t;i++){
+                x.modifyVal(i,0,0);
+            }
+
+            for(int i=t+1;i<row;i++){
+                x.modifyVal(i,0,result.matrix[i*col+t]);
+            }
+            T length=x.matrix[t+1]*x.matrix[t+1];
+            for(int i=t+2;i<row;i++){
+                length=length+x.matrix[i]*x.matrix[i];
+            }
+            length=sqrt(length);
+            for(int i=0;i<row;i++){
+                if(i!=t+1){
+                    w.modifyVal(i,0,0);
+                }else{
+                    w.modifyVal(i,0,length);
+                }
+            }
+            if(x.matrix[0]>0) x=x.scalar_product(-1);
+            v=w+x;
+            if(v.getLength()-0>0.0001) {
                 H = v * v.transposition() / ((v.transposition() * v).matrix[0]);
                 H = H.scalar_product(-2);
                 for (int i = 0; i < row; i++) {
@@ -637,11 +638,11 @@ public:
                 }
                 result = H * result * H;
             }
-		}
-		return result;
-	}
+        }
+        return result;
+    }
 
-	T getLength(){
+    T getLength(){
         T result=matrix[0]*matrix[0];
         for(int i=1;i<row;i++){
             result=result+matrix[i]*matrix[i];
