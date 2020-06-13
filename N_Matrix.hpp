@@ -71,7 +71,7 @@ public:
         }
 
     }
-   N_Matrix(const Mat img):N_Matrix(img.rows, img.cols){
+    N_Matrix(const Mat img):N_Matrix(img.rows, img.cols){
        for(int i = 0; i < row; i++){
            for(int j = 0; j < col; j++){
                matrix[i*col+j] = img.at<uchar>(i, j);
@@ -191,7 +191,7 @@ public:
     }
 
     template <typename T1>
-    N_Matrix dot_product(const N_Matrix& other){
+    N_Matrix dot_product(const N_Matrix<T1>& other){
         try {
             if ((col != other.col) | (row != other.row)) throw SizeException(4);
             N_Matrix trans = this->transposition();
@@ -244,11 +244,11 @@ public:
     void printMatrix(){
         for (int i = 0; i < row; ++i) {
             for (int j = 0; j < col; ++j) {
-                int a = matrix[i*col+j];
                 cout<<matrix[i*col+j]<<" ";
             }
             cout<<endl;
         }
+        cout << endl;
     }
 
 
@@ -656,7 +656,8 @@ public:
        Mat img{row,col,CV_8U, Scalar::all(0)};
        for(int i = 0; i < row; i++){
            for(int j = 0; j < col; j++){
-               img.at<uchar>(i, j) = matrix[i*col+j];
+               img.at<uchar>(i, j) = matrix[i*col+j] > 255 ? 255:
+                                     (matrix[i*col+j] < 0? 0 : (unsigned char)matrix[i*col+j]);
            }
        }
        return img;
