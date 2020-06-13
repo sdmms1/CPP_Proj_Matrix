@@ -20,3 +20,6 @@ include_directories(
 #include_directories(${OpenCV_INCLUDE_DIRS})
 add_executable(image_demo image_test.cpp)
 target_link_libraries(image_demo ${OpenCV_LIBS})
+
+add_executable(test_demo test1.cpp)
+target_link_libraries(test_demo ${OpenCV_LIBS})

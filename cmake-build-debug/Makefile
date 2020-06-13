@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named test_demo
+
+# Build rule for target.
+test_demo: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_demo
+.PHONY : test_demo
+
+# fast build rule for target.
+test_demo/fast:
+	$(MAKE) -f CMakeFiles/test_demo.dir/build.make CMakeFiles/test_demo.dir/build
+.PHONY : test_demo/fast
+
+#=============================================================================
 # Target rules for targets named CPP_Proj_Matrix
 
 # Build rule for target.
@@ -190,6 +203,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/CPP_Proj_Matrix.dir/build.make CMakeFiles/CPP_Proj_Matrix.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+test1.o: test1.cpp.o
+
+.PHONY : test1.o
+
+# target to build an object file
+test1.cpp.o:
+	$(MAKE) -f CMakeFiles/test_demo.dir/build.make CMakeFiles/test_demo.dir/test1.cpp.o
+.PHONY : test1.cpp.o
+
+test1.i: test1.cpp.i
+
+.PHONY : test1.i
+
+# target to preprocess a source file
+test1.cpp.i:
+	$(MAKE) -f CMakeFiles/test_demo.dir/build.make CMakeFiles/test_demo.dir/test1.cpp.i
+.PHONY : test1.cpp.i
+
+test1.s: test1.cpp.s
+
+.PHONY : test1.s
+
+# target to generate assembly for a file
+test1.cpp.s:
+	$(MAKE) -f CMakeFiles/test_demo.dir/build.make CMakeFiles/test_demo.dir/test1.cpp.s
+.PHONY : test1.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -198,6 +238,7 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... test_demo"
 	@echo "... CPP_Proj_Matrix"
 	@echo "... image_demo"
 	@echo "... image_test.o"
@@ -206,6 +247,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... test1.o"
+	@echo "... test1.i"
+	@echo "... test1.s"
 .PHONY : help
 
 

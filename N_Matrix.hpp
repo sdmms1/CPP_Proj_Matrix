@@ -6,8 +6,10 @@
 #define PROJECT_N_MATRIX_HPP
 
 #include <iostream>
+#include <opencv2/opencv.hpp>
 #include "S_Matrix.hpp"
 using namespace std;
+using namespace cv;
 
 struct SizeException:public exception{
     int type;
@@ -33,7 +35,6 @@ struct IndexOutOfRange:public exception{
     }
 };
 
-
 template <class T>
 class N_Matrix {
 public:
@@ -41,28 +42,22 @@ public:
     int row{};
     T * matrix;
 
-    N_Matrix(){
-        this->col = 1;
-        this->row = 1;
-    }
-    N_Matrix(int row,int col){
+    N_Matrix(int row = 1,int col = 1){
         this->row = row;
         this->col = col;
         matrix = new T[col*row];
     }
-    N_Matrix(int row,int col,T*Mat){
-        this->col = col;
-        this->row = row;
-        matrix = new T[row*col];
+    N_Matrix(int row,int col,const T*Mat):N_Matrix(row,col){
         T *p = matrix;
         for (int i = 0; i < row*col; ++i)
             *p++ = *Mat++;
-
     }
-    N_Matrix(S_Matrix<T>& other){
-        this->row = other.row;
-        this->col = other.col;
-        matrix = new T [row*col];
+    N_Matrix(const N_Matrix<T>& other):N_Matrix(other.row, other.col){
+        for(int i = 0; i < row*col; i++){
+            matrix[i] = other.matrix[i];
+        }
+    }
+    N_Matrix(const S_Matrix<T>& other):N_Matrix(other.row,other.col){
         for (int i = 0; i < row*col; ++i) {
             matrix[i] = 0;
         }
@@ -76,6 +71,18 @@ public:
         }
 
     }
+    N_Matrix(const Mat img):N_Matrix(img.rows, img.cols){
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                matrix[i*col+j] = img.at<uchar>(i, j);
+            }
+        }
+    }
+
+    ~N_Matrix(){
+        delete[] matrix;
+    }
+
     void setMatrix(T*Mat){
         T *p = matrix;
         for (int i = 0; i < row*col; ++i)
@@ -454,7 +461,7 @@ public:
     }
 	
 	bool isInvertible(){
-		return getDet()==0?false:true;
+		return getDet() != 0;
 	}
 	
 	N_Matrix getInverse(){
@@ -529,17 +536,18 @@ public:
 	N_Matrix getEigenValue(){
 
 		T det=getDet();
-		N_Matrix nmatrix=*this;
+		N_Matrix nmatrix=getHessnberg();
 		int i=0;
 		while(i<1000){
+            T product=nmatrix.matrix[0];
+            for(int i=1;i<col;i++){
+                product=product*nmatrix.matrix[i*col+i];
+            }
+            if(det-product>0.0001||product-det>0.0001){(i++);}
+            else{break;}
 			N_Matrix Q=nmatrix.QRdecomposition();
 			nmatrix=Q.transposition()*nmatrix*Q;
-			T product=nmatrix.matrix[0];
-			for(int i=1;i<col;i++){
-				product=product*nmatrix.matrix[i*col+i];
-			}
-			if(det-product>0.0001||product-det>0.0001){(i++);}
-			else{break;}
+
 		}
 		return nmatrix;
 	}
@@ -592,8 +600,64 @@ public:
             cout<<e.what()<<endl;
         }
     }
+	
+	N_Matrix getHessnberg(){
+		N_Matrix result=*this;
+		N_Matrix x(row,1);
+		N_Matrix w(row,1);
+		N_Matrix v(row,1);
+		N_Matrix H(row,col);
+		for(int t=0;t<col-2;t++){
+			for(int i=0;i<=t;i++){
+				x.modifyVal(i,0,0);
+			}
+			
+			for(int i=t+1;i<row;i++){
+				x.modifyVal(i,0,result.matrix[i*col+t]);
+			}
+			T length=x.matrix[t+1]*x.matrix[t+1];
+			for(int i=t+2;i<row;i++){
+				length=length+x.matrix[i]*x.matrix[i];
+			}
+			length=sqrt(length);
+			for(int i=0;i<row;i++){
+				if(i!=t+1){
+					w.modifyVal(i,0,0);
+				}else{
+					w.modifyVal(i,0,length);
+				}
+			}
+			if(x.matrix[0]>0) x=x.scalar_product(-1);
+			v=w+x;
+			if(v.getLength()-0>0.0001) {
+                H = v * v.transposition() / ((v.transposition() * v).matrix[0]);
+                H = H.scalar_product(-2);
+                for (int i = 0; i < row; i++) {
+                    H.modifyVal(i, i, H.matrix[i * col + i] + 1);
+                }
+                result = H * result * H;
+            }
+		}
+		return result;
+	}
+
+	T getLength(){
+        T result=matrix[0]*matrix[0];
+        for(int i=1;i<row;i++){
+            result=result+matrix[i]*matrix[i];
+        }
+        return result;
+    }
+
+    Mat toOpenCVMat(){
+        Mat img{row,col,CV_8U, Scalar::all(0)};
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                img.at<uchar>(i, j) = matrix[i*col+j];
+            }
+        }
+        return img;
+    }
 };
-
-
 
 #endif //PROJECT_N_MATRIX_HPP
