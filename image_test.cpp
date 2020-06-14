@@ -18,8 +18,8 @@ int main(){
         return -1;
     }
 
-//    testTrans();
-    testConvolution();
+    testTrans();
+//    testConvolution();
 
 };
 
