@@ -23,7 +23,7 @@ struct SizeException:public exception{
         else if(type==6) return "The size you provide does not match for reshape operation";
         else if(type==7) return "The matrix size does not support getting determinant operation";
         else if(type==8) return "The matrix size does not support getting trace operation";
-        else if(type==9) return "The matrix size does not support cross product operation (need row-column==1";
+        else return "The matrix size does not support cross product operation (need row-column==1";
     }
 };
 
@@ -103,6 +103,7 @@ public:
             return result;
         }catch (SizeException& e){
             cout<<e.what();
+            abort();
         }
     }
 
@@ -117,11 +118,12 @@ public:
             return result;
         }catch (SizeException& e){
             cout<<e.what();
+            abort();
         }
     }
 
-//    template <typename T1>
-    N_Matrix scalar_product (T val) const{
+    template <typename T1>
+    N_Matrix scalar_product (T1 val) const{
         N_Matrix result {row,col};
         for (int i = 0; i < col*row; ++i) {
             result.matrix[i] = val*matrix[i];
@@ -129,8 +131,8 @@ public:
         return result;
     }
 
-    //template <typename T1>
-    N_Matrix operator / (T val){
+    template <typename T1>
+    N_Matrix operator / (T1 val){
         N_Matrix result {row,col};
         for (int i = 0; i < col*row; ++i) {
             result.matrix[i] = matrix[i]/val;
@@ -167,6 +169,7 @@ public:
             return result;
         }catch (SizeException& e){
             cout<<e.what();
+            abort();
         }
     }
 
@@ -187,6 +190,7 @@ public:
             return result;
         }catch (SizeException& e){
             cout<<e.what();
+            abort();
         }
     }
 
@@ -198,6 +202,7 @@ public:
             return trans * other;
         }catch (SizeException& e){
             cout<<e.what();
+            abort();
         }
     }
 
