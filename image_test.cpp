@@ -41,12 +41,14 @@ void testConvolution(){
     N_Matrix<double> a{img};
 
     double kernel[] = {
-//            -1,2,-1,0,0,0,-1,2,-1
-            0,-1,0,-1,4,-1,0,-1,0
+//            1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9
+            -1,2,-1,0,0,0,-1,2,-1
+//            0,-1,0,-1,9,-1,0,-1,0
+//            0,-1,0,-1,4,-1,0,-1,0
     };
     N_Matrix<double> k1{3,3,kernel};
     Mat k2 = (Mat_<double>(3,3) <<
-                0,-1,0,-1,4,-1,0,-1,0
+                                0,-1,0,-1,4,-1,0,-1,0
                 );
 
     Mat dstImage;
@@ -54,9 +56,9 @@ void testConvolution(){
 
     N_Matrix<double> b = a.convolution(k1);
 
-    imshow("Pokemon",img);
-    imshow("PokemonT1", b.toOpenCVMat());
-    imshow("PokemonT2", dstImage);
+    imshow("OriginPic",img);
+    imshow("MyConvol", b.toOpenCVMat());
+    imshow("OpecCVConvol", dstImage);
 
     waitKey(0);
 }

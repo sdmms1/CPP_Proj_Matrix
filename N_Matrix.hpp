@@ -84,9 +84,8 @@ public:
     }
 
     void setMatrix(T*Mat){
-        T *p = matrix;
-        for (int i = 0; i < row*col; ++i)
-            *p++ = *Mat++;
+        delete[] matrix;
+        matrix = Mat;
     }
     void modifyVal(int row_num,int col_num,T val){
         matrix[row_num*col+col_num] = val;
@@ -140,6 +139,26 @@ public:
         return result;
     }
 
+    N_Matrix operator = (const N_Matrix& other){
+        if(matrix == other.matrix)
+            return *this;
+        delete[] matrix;
+        row = other.row; col = other.col; matrix = new T[row * col];
+        for(int i = 0; i < row * col; i++)
+            matrix[i] = other.matrix[i];
+        return *this;
+    }
+
+    bool operator == (const N_Matrix& other){
+        if(row != other.row || col != other.col)
+            return false;
+        for(int i = 0; i < row * col; i++){
+            if(matrix[i] != other.matrix[i])
+                return false;
+        }
+        return true;
+    }
+
     N_Matrix transposition(){
         N_Matrix result {col,row};
         for (int i = 0; i < row; ++i) {
@@ -150,8 +169,8 @@ public:
         return result;
     }
 
-    N_Matrix conjugation(){
-        N_Matrix result {row,col};
+    N_Matrix<complex<double>> conjugation(){
+        N_Matrix<complex<double>> result {row,col};
         for (int i = 0; i < col*row; ++i) {
             result.matrix[i] = conj(matrix[i]);
         }
@@ -255,7 +274,6 @@ public:
         }
         cout << endl;
     }
-
 
     T getMaxByRow(int rowNum){
         try {
@@ -383,6 +401,7 @@ public:
 
     void reShape(int newRow,int newCol){
         try {
+            *this = transposition();
             if(newRow*newCol!=row*col) throw SizeException(6);
             if(newRow<1||newCol<1) throw IndexOutOfRange(1);
             T *newmatrix = new T[newRow * newCol];
@@ -407,35 +426,48 @@ public:
     N_Matrix sliceByRow(int startRow,int endRow){
         try {
             if(startRow<0||endRow>row-1||endRow-startRow<0) throw IndexOutOfRange(1);
-            int newRow = endRow - startRow + 1;
-            T *temp = new T[newRow * col];
-            for (int i = 0; i < newRow; i++) {
-                for (int j = 0; j < col; j++) {
-                    temp[i * col + j] = matrix[(startRow + i) * col + j];
-                }
-            }
-            return N_Matrix(newRow, col, temp);
         }catch(IndexOutOfRange& e){
             cout<<e.what()<<endl;
         }
 
+        int newRow = endRow - startRow + 1;
+        N_Matrix result{newRow, col};
+        for (int i = 0; i < newRow; i++) {
+            for (int j = 0; j < col; j++) {
+                result.matrix[i * col + j] = matrix[(startRow + i) * col + j];
+            }
+        }
+        return result;
     }
 
     N_Matrix sliceByCol(int startCol,int endCol){
         try {
             if(startCol<0||endCol>col-1||endCol-startCol<0) throw IndexOutOfRange(1);
-            int newCol = endCol - startCol + 1;
-            T *temp = new T[row * newCol];
-            for (int i = 0; i < row; i++) {
-                for (int j = 0; j < newCol; j++) {
-                    temp[i * newCol + j] = matrix[i * col + j + startCol];
-                }
-            }
-            return N_Matrix(row, newCol, temp);
         }catch(IndexOutOfRange& e){
             cout<<e.what()<<endl;
         }
 
+        int newCol = endCol - startCol + 1;
+        N_Matrix result{row, newCol};
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < newCol; j++) {
+                result.matrix[i * newCol + j] = matrix[i * col + j + startCol];
+            }
+        }
+        return result;
+    }
+
+    N_Matrix slice(int x1,int y1, int x2 = 0, int y2 = 0){
+        int a = x1 < x2? x1 : x2, b = x1 + x2 - a;
+        int c = y1 < y2? y1 : y2, d = y1 + y2 - c;
+        try {
+            if(a < 0 || b > row - 1 || c < 0 || d > col - 1)
+                throw IndexOutOfRange(1);
+        }catch(IndexOutOfRange& e){
+            cout<<e.what()<<endl;
+        }
+
+        return sliceByRow(a,b).sliceByCol(c,d);
     }
 
     T getDet(){
@@ -585,7 +617,7 @@ public:
         }
     }
 
-    N_Matrix crossProduct(){
+        N_Matrix crossProduct(){
         try {
             if(row-col!=1) throw  SizeException(9);
             T *vector = new T[row];
