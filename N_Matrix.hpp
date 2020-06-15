@@ -50,9 +50,13 @@ public:
         matrix = new T[col*row];
     }
     N_Matrix(int row,int col,const T*Mat):N_Matrix(row,col){
-        T *p = matrix;
         for (int i = 0; i < row*col; ++i)
-            *p++ = *Mat++;
+            matrix[i] = Mat[i];
+    }
+    N_Matrix(const N_Matrix& other):N_Matrix(other.row, other.col){
+        for(int i = 0; i < row*col; i++){
+            matrix[i] = other.matrix[i];
+        }
     }
     template <typename T1>
     N_Matrix(const N_Matrix<T1>& other):N_Matrix(other.row, other.col){
@@ -88,7 +92,9 @@ public:
 
     void setMatrix(T*Mat){
         delete[] matrix;
-        matrix = Mat;
+        matrix = new T[row * col];
+        for (int i = 0; i < row*col; ++i)
+            matrix[i] = Mat[i];
     }
     void modifyVal(int row_num,int col_num,T val){
         matrix[row_num*col+col_num] = val;
@@ -271,7 +277,7 @@ public:
     void printMatrix(){
         for (int i = 0; i < row; ++i) {
             for (int j = 0; j < col; ++j) {
-                cout<<matrix[i*col+j]<<" ";
+                cout<<matrix[i*col+j]<<"\t";
             }
             cout<<endl;
         }
@@ -415,15 +421,16 @@ public:
         T *newmatrix = new T[newRow * newCol];
         for (int i = 0; i < newRow; i++) {
             for (int j = 0; j < newCol; j++) {
-                int index = j * newRow + i + 1;
-                int newi = index % row == 0 ? row - 1 : index % row - 1;
-                int newj = index % row == 0 ? index / row - 1 : index / row;
-                newmatrix[i * newCol + j] = matrix[newi * col + newj];
+                int index = i * newCol + j + 1;
+                int newi = index % col == 0 ? col - 1 : index % col - 1;
+                int newj = index % col == 0 ? index / col - 1 : index / col;
+                newmatrix[i * newCol + j] = matrix[newj * col + newi];
             }
         }
         row = newRow;
         col = newCol;
         setMatrix(newmatrix);
+        delete[] newmatrix;
     }
 
     N_Matrix sliceByRow(int startRow,int endRow){
@@ -621,7 +628,6 @@ public:
             copy.matrix[i*col+i]=copy.matrix[i*col+i]+offset*(-1);
         }
 
-        copy.printMatrix();
         return copy;
     }
 
@@ -645,7 +651,7 @@ public:
 
             N_Matrix V(row,1);
             for(int i=0;i<row;i++){
-                V.matrix[i]=1;
+                V.matrix[i]=i + 1;
             }
             int count=0;
             while(count<200){

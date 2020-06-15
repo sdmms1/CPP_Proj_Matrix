@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named test_demo
+# Target rules for targets named image_demo
 
 # Build rule for target.
-test_demo: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_demo
-.PHONY : test_demo
+image_demo: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 image_demo
+.PHONY : image_demo
 
 # fast build rule for target.
-test_demo/fast:
-	$(MAKE) -f CMakeFiles/test_demo.dir/build.make CMakeFiles/test_demo.dir/build
-.PHONY : test_demo/fast
+image_demo/fast:
+	$(MAKE) -f CMakeFiles/image_demo.dir/build.make CMakeFiles/image_demo.dir/build
+.PHONY : image_demo/fast
 
 #=============================================================================
 # Target rules for targets named CPP_Proj_Matrix
@@ -137,17 +137,30 @@ CPP_Proj_Matrix/fast:
 .PHONY : CPP_Proj_Matrix/fast
 
 #=============================================================================
-# Target rules for targets named image_demo
+# Target rules for targets named test_demo
 
 # Build rule for target.
-image_demo: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 image_demo
-.PHONY : image_demo
+test_demo: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_demo
+.PHONY : test_demo
 
 # fast build rule for target.
-image_demo/fast:
-	$(MAKE) -f CMakeFiles/image_demo.dir/build.make CMakeFiles/image_demo.dir/build
-.PHONY : image_demo/fast
+test_demo/fast:
+	$(MAKE) -f CMakeFiles/test_demo.dir/build.make CMakeFiles/test_demo.dir/build
+.PHONY : test_demo/fast
+
+#=============================================================================
+# Target rules for targets named sparse_demo
+
+# Build rule for target.
+sparse_demo: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sparse_demo
+.PHONY : sparse_demo
+
+# fast build rule for target.
+sparse_demo/fast:
+	$(MAKE) -f CMakeFiles/sparse_demo.dir/build.make CMakeFiles/sparse_demo.dir/build
+.PHONY : sparse_demo/fast
 
 image_test.o: image_test.cpp.o
 
@@ -203,6 +216,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/CPP_Proj_Matrix.dir/build.make CMakeFiles/CPP_Proj_Matrix.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+sparse_test.o: sparse_test.cpp.o
+
+.PHONY : sparse_test.o
+
+# target to build an object file
+sparse_test.cpp.o:
+	$(MAKE) -f CMakeFiles/sparse_demo.dir/build.make CMakeFiles/sparse_demo.dir/sparse_test.cpp.o
+.PHONY : sparse_test.cpp.o
+
+sparse_test.i: sparse_test.cpp.i
+
+.PHONY : sparse_test.i
+
+# target to preprocess a source file
+sparse_test.cpp.i:
+	$(MAKE) -f CMakeFiles/sparse_demo.dir/build.make CMakeFiles/sparse_demo.dir/sparse_test.cpp.i
+.PHONY : sparse_test.cpp.i
+
+sparse_test.s: sparse_test.cpp.s
+
+.PHONY : sparse_test.s
+
+# target to generate assembly for a file
+sparse_test.cpp.s:
+	$(MAKE) -f CMakeFiles/sparse_demo.dir/build.make CMakeFiles/sparse_demo.dir/sparse_test.cpp.s
+.PHONY : sparse_test.cpp.s
+
 test1.o: test1.cpp.o
 
 .PHONY : test1.o
@@ -237,16 +277,20 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
-	@echo "... test_demo"
-	@echo "... CPP_Proj_Matrix"
 	@echo "... image_demo"
+	@echo "... CPP_Proj_Matrix"
+	@echo "... test_demo"
+	@echo "... sparse_demo"
+	@echo "... edit_cache"
 	@echo "... image_test.o"
 	@echo "... image_test.i"
 	@echo "... image_test.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... sparse_test.o"
+	@echo "... sparse_test.i"
+	@echo "... sparse_test.s"
 	@echo "... test1.o"
 	@echo "... test1.i"
 	@echo "... test1.s"

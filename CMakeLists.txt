@@ -23,3 +23,6 @@ target_link_libraries(image_demo ${OpenCV_LIBS})
 
 add_executable(test_demo test1.cpp)
 target_link_libraries(test_demo ${OpenCV_LIBS})
+
+add_executable(sparse_demo sparse_test.cpp)
+target_link_libraries(sparse_demo ${OpenCV_LIBS})

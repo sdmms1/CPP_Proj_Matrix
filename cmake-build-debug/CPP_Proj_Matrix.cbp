@@ -27,11 +27,95 @@
 					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="edit_cache">
+			<Target title="image_demo">
+				<Option output="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/image_demo.exe" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug"/>
-				<Option type="4"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix"/>
+					<Add directory="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/G:/2020Spring/CS205/LAB/opencv_4_2/mingw_opencv/include/opencv2"/>
+					<Add directory="/usr/include/opencv"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++/x86_64-pc-cygwin"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/../../../../lib/../include/w32api"/>
+				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 image_demo"/>
+					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="image_demo/fast">
+				<Option output="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/image_demo.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix"/>
+					<Add directory="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/G:/2020Spring/CS205/LAB/opencv_4_2/mingw_opencv/include/opencv2"/>
+					<Add directory="/usr/include/opencv"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++/x86_64-pc-cygwin"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/../../../../lib/../include/w32api"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 image_demo/fast"/>
+					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CPP_Proj_Matrix">
+				<Option output="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CPP_Proj_Matrix.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix"/>
+					<Add directory="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/G:/2020Spring/CS205/LAB/opencv_4_2/mingw_opencv/include/opencv2"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++/x86_64-pc-cygwin"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/../../../../lib/../include/w32api"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 CPP_Proj_Matrix"/>
+					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CPP_Proj_Matrix/fast">
+				<Option output="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CPP_Proj_Matrix.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix"/>
+					<Add directory="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/G:/2020Spring/CS205/LAB/opencv_4_2/mingw_opencv/include/opencv2"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++/x86_64-pc-cygwin"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/../../../../lib/../include/w32api"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 CPP_Proj_Matrix/fast"/>
 					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
@@ -85,54 +169,8 @@
 					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="CPP_Proj_Matrix">
-				<Option output="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CPP_Proj_Matrix.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix"/>
-					<Add directory="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/G:/2020Spring/CS205/LAB/opencv_4_2/mingw_opencv/include/opencv2"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++/x86_64-pc-cygwin"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include"/>
-					<Add directory="/usr/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/../../../../lib/../include/w32api"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 CPP_Proj_Matrix"/>
-					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="CPP_Proj_Matrix/fast">
-				<Option output="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/CPP_Proj_Matrix.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix"/>
-					<Add directory="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/G:/2020Spring/CS205/LAB/opencv_4_2/mingw_opencv/include/opencv2"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++/x86_64-pc-cygwin"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include/c++/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/include"/>
-					<Add directory="/usr/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/../../../../lib/../include/w32api"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 CPP_Proj_Matrix/fast"/>
-					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="image_demo">
-				<Option output="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/image_demo.exe" prefix_auto="0" extension_auto="0"/>
+			<Target title="sparse_demo">
+				<Option output="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/sparse_demo.exe" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -149,14 +187,14 @@
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/../../../../lib/../include/w32api"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 image_demo"/>
+					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 sparse_demo"/>
 					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="image_demo/fast">
-				<Option output="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/image_demo.exe" prefix_auto="0" extension_auto="0"/>
+			<Target title="sparse_demo/fast">
+				<Option output="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/sparse_demo.exe" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -173,7 +211,17 @@
 					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/9.3.0/../../../../lib/../include/w32api"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 image_demo/fast"/>
+					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 sparse_demo/fast"/>
+					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
 					<CompileFile command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make.exe -j12 -f &quot;/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
@@ -185,6 +233,9 @@
 		</Unit>
 		<Unit filename="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/main.cpp">
 			<Option target="CPP_Proj_Matrix"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/sparse_test.cpp">
+			<Option target="sparse_demo"/>
 		</Unit>
 		<Unit filename="/cygdrive/c/Users/sdmms/Desktop/cs/CPP_Proj_Matrix/test1.cpp">
 			<Option target="test_demo"/>
