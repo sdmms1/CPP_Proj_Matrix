@@ -62,21 +62,21 @@ int main() {
 //    (a / 3).printMatrix();
 //    (b / 3).printMatrix();
 
-    a.printMatrix();
-    b.printMatrix();
-    a.transposition().printMatrix();
-    (a * b).printMatrix();
-    (a.element_wise_mult(b)).printMatrix();
-
-    c.printMatrix();
-    c.conjugation().printMatrix();
-
-    x.printMatrix();
-    y.printMatrix();
-    x.dot_product(y).printMatrix();
-
-    z.printMatrix();
-    (z.crossProduct()).printMatrix();
+//    a.printMatrix();
+//    b.printMatrix();
+//    a.transposition().printMatrix();
+//    (a * b).printMatrix();
+//    (a.element_wise_mult(b)).printMatrix();
+//
+//    c.printMatrix();
+//    c.conjugation().printMatrix();
+//
+//    x.printMatrix();
+//    y.printMatrix();
+//    x.dot_product(y).printMatrix();
+//
+//    z.printMatrix();
+//    (z.crossProduct()).printMatrix();
 
 //    cout << a.getMax() << endl;
 //    cout << a.getMaxByCol(0) << endl;
@@ -96,13 +96,13 @@ int main() {
 //    showEigen(e);
 //    showEigen(f);
 
-//    f.printMatrix();
-//    f.sliceByCol(1,3).printMatrix();
-//    f.sliceByRow(2,3).printMatrix();
-//    f.slice(1,2,3,3).printMatrix();
-//    f.reShape(1,16);
-//    f.printMatrix();
-//    f.reShape(8,2);
-//    f.printMatrix();
+    f.printMatrix();
+    f.sliceByCol(1,3).printMatrix();
+    f.sliceByRow(2,3).printMatrix();
+    f.slice(1,2,3,3).printMatrix();
+    f.reShape(1,16);
+    f.printMatrix();
+    f.reShape(8,2);
+    f.printMatrix();
 
 }

@@ -44,7 +44,7 @@ public:
     int row{};
     T * matrix;
 
-    N_Matrix(int row = 1,int col = 1){
+    explicit N_Matrix(int row = 1,int col = 1){
         this->row = row;
         this->col = col;
         matrix = new T[col*row];
@@ -59,12 +59,12 @@ public:
         }
     }
     template <typename T1>
-    N_Matrix(const N_Matrix<T1>& other):N_Matrix(other.row, other.col){
+    explicit N_Matrix(const N_Matrix<T1>& other):N_Matrix(other.row, other.col){
         for(int i = 0; i < row*col; i++){
             matrix[i] = other.matrix[i];
         }
     }
-    N_Matrix(const S_Matrix<T>& other):N_Matrix(other.row,other.col){
+    explicit N_Matrix(const S_Matrix<T>& other):N_Matrix(other.row,other.col){
         for (int i = 0; i < row*col; ++i) {
             matrix[i] = 0;
         }
@@ -78,7 +78,7 @@ public:
         }
 
     }
-    N_Matrix(const Mat img):N_Matrix(img.rows, img.cols){
+    explicit N_Matrix(const Mat& img):N_Matrix(img.rows, img.cols){
         for(int i = 0; i < row; i++){
             for(int j = 0; j < col; j++){
                 matrix[i*col+j] = img.at<uchar>(i, j);
@@ -150,13 +150,13 @@ public:
         return result;
     }
 
-    N_Matrix operator = (const N_Matrix& other){
-        if(matrix == other.matrix)
-            return *this;
-        delete[] matrix;
-        row = other.row; col = other.col; matrix = new T[row * col];
-        for(int i = 0; i < row * col; i++)
-            matrix[i] = other.matrix[i];
+    N_Matrix& operator = (const N_Matrix& other){
+        if(this != &other){
+            delete[] matrix;
+            row = other.row; col = other.col; matrix = new T[row * col];
+            for(int i = 0; i < row * col; i++)
+                matrix[i] = other.matrix[i];
+        }
         return *this;
     }
 
@@ -495,7 +495,6 @@ public:
 
         return sliceByRow(a,b).sliceByCol(c,d);
     }
-
 
     T getDet(){
         try {
