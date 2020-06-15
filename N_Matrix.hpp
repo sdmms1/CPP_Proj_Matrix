@@ -14,7 +14,7 @@ using namespace cv;
 struct SizeException:public exception{
     int type;
     explicit SizeException(int t){type = t;}
-    const char * what() const throw(){
+    const char * what() const throw() override{
         if (type == 1) return "The size of the two matrices don't support the add operation";
         else if (type == 2) return "The size of the two matrices don't support the subtract operation";
         else if (type == 3) return "The size of the two matrices don't support the element-wise multiply operation";
@@ -39,51 +39,90 @@ struct IndexOutOfRange:public exception{
 
 template <class T>
 class N_Matrix {
-public:
+private:
     int col{};
     int row{};
     T * matrix;
+public:
+    int getCol() const {
+        return col;
+    }
+
+    int getRow() const {
+        return row;
+    }
+
+    void setSize(int row, int col){
+        this->row = row;
+        this->col = col;
+        delete[] matrix;
+        matrix = new T[row * col];
+    }
+
+    T *getMatrix() const {
+        return matrix;
+    }
+
+    T getValue(int i,int j) const{
+        return matrix[i*col+j];
+    }
 
     explicit N_Matrix(int row = 1,int col = 1){
         this->row = row;
         this->col = col;
         matrix = new T[col*row];
+        matrix[0] = 0;
     }
     N_Matrix(int row,int col,const T*Mat):N_Matrix(row,col){
         for (int i = 0; i < row*col; ++i)
             matrix[i] = Mat[i];
     }
-    N_Matrix(const N_Matrix& other):N_Matrix(other.row, other.col){
+    N_Matrix(const N_Matrix& other):N_Matrix(other.getRow(), other.getCol()){
         for(int i = 0; i < row*col; i++){
             matrix[i] = other.matrix[i];
         }
     }
     template <typename T1>
-    explicit N_Matrix(const N_Matrix<T1>& other):N_Matrix(other.row, other.col){
+    explicit N_Matrix(const N_Matrix<T1>& other):N_Matrix(other.getRow(), other.getCol()){
         for(int i = 0; i < row*col; i++){
-            matrix[i] = other.matrix[i];
+            matrix[i] = other.getMatrix()[i];
         }
     }
-    explicit N_Matrix(const S_Matrix<T>& other):N_Matrix(other.row,other.col){
+    N_Matrix(const S_Matrix<T>& other):N_Matrix(other.getRow(),other.getCol()){
         for (int i = 0; i < row*col; ++i) {
             matrix[i] = 0;
         }
 
         for (int i = 0; i < row; ++i) {
-            while (other.row_offsets[i] == other.row_offsets[i+1]) i++;
+            while (other.getRowOffsets()[i] == other.getRowOffsets()[i+1]) i++;
             if (i>row) break;
-            for (int j = other.row_offsets[i]; j < other.row_offsets[i+1]; ++j) {
-                matrix[i*col+other.col_idx[j]] = other.values[j];
+            for (int j = other.getRowOffsets()[i]; j < other.getRowOffsets()[i+1]; ++j) {
+                matrix[i*col+other.getColIdx()[j]] = other.getValues()[j];
             }
         }
 
     }
-    explicit N_Matrix(const Mat& img):N_Matrix(img.rows, img.cols){
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < col; j++){
-                matrix[i*col+j] = img.at<uchar>(i, j);
+    explicit N_Matrix(const Mat img, int color):N_Matrix(img.rows, img.cols){
+        if(color == 0){
+            for(int i = 0; i < row; i++){
+                for(int j = 0; j < col; j++){
+                    matrix[i*col+j] = img.at<uchar>(i, j);
+                }
+            }
+        }else{
+            delete[] matrix;
+            col = 3 * col;
+            matrix = new T[row * col];
+            for(int i = 0; i < row; i++){
+                for(int j = 0; j < col / 3; j++){
+                    Vec3b pixel = img.at<Vec3b>(i, j);
+                    matrix[i*col + 3 * j] = pixel[0];
+                    matrix[i*col + 3 * j + 1] = pixel[1];
+                    matrix[i*col + 3 * j + 2] = pixel[2];
+                }
             }
         }
+
     }
 
     ~N_Matrix(){
@@ -103,7 +142,7 @@ public:
     template <typename T1>
     N_Matrix operator + (const N_Matrix<T1>& other) const{
         try{
-            if ((this->col != other.col) | (this->row != other.row))
+            if ((this->col != other.getCol()) | (this->row != other.getRow()))
                 throw SizeException(1);
         }catch (SizeException& e){
             cerr<<e.what();
@@ -111,7 +150,7 @@ public:
         }
         N_Matrix result {row,col};
         for (int i = 0; i < col*row; ++i) {
-            result.matrix[i] = matrix[i] + other.matrix[i];
+            result.matrix[i] = matrix[i] + other.getMatrix()[i];
         }
         return result;
     }
@@ -119,7 +158,7 @@ public:
     template <typename T1>
     N_Matrix operator - (const N_Matrix<T1>& other) const{
         try{
-            if ((this->col != other.col) | (this->row != other.row))
+            if ((this->col != other.getCol()) | (this->row != other.getRow()))
                 throw SizeException(2);
         }catch (SizeException& e){
             cerr<<e.what();
@@ -127,7 +166,7 @@ public:
         }
         N_Matrix result {row,col};
         for (int i = 0; i < col*row; ++i) {
-            result.matrix[i] = matrix[i] - other.matrix[i];
+            result.matrix[i] = matrix[i] - other.getMatrix()[i];
         }
         return result;
     }
@@ -153,18 +192,20 @@ public:
     N_Matrix& operator = (const N_Matrix& other){
         if(this != &other){
             delete[] matrix;
-            row = other.row; col = other.col; matrix = new T[row * col];
+            row = other.getRow();
+            col = other.getCol();
+            matrix = new T[row * col];
             for(int i = 0; i < row * col; i++)
-                matrix[i] = other.matrix[i];
+                matrix[i] = other.getMatrix()[i];
         }
         return *this;
     }
 
     bool operator == (const N_Matrix& other){
-        if(row != other.row || col != other.col)
+        if(row != other.getRow() || col != other.getCol())
             return false;
         for(int i = 0; i < row * col; i++){
-            if(matrix[i] != other.matrix[i])
+            if(matrix[i] != other.getMatrix()[i])
                 return false;
         }
         return true;
@@ -191,7 +232,7 @@ public:
     template <typename T1>
     N_Matrix element_wise_mult(const N_Matrix<T1>& matrix2){
         try{
-            if ((row != matrix2.row)|(col != matrix2.col))
+            if ((row != matrix2.getRow())|(col != matrix2.getCol()))
                 throw SizeException(3);
         }catch (SizeException& e){
             cerr<<e.what();
@@ -199,7 +240,7 @@ public:
         }
         N_Matrix result {row,col};
         for (int i = 0; i < row*col; ++i) {
-            result.matrix[i] = matrix[i] * matrix2.matrix[i];
+            result.matrix[i] = matrix[i] * matrix2.getMatrix()[i];
         }
         return result;
     }
@@ -207,19 +248,19 @@ public:
     template <typename T1>
     N_Matrix operator * (const N_Matrix<T1>& other) const {
         try{
-            if (col != other.row) throw SizeException(4);
+            if (col != other.getRow()) throw SizeException(4);
         }catch (SizeException& e){
             cerr<<e.what();
             abort();
         }
-        N_Matrix result {row,other.col};
+        N_Matrix result {row,other.getCol()};
         for (int i = 0; i < row; ++i) {
-            for (int j = 0; j < other.col; ++j) {
+            for (int j = 0; j < other.getCol(); ++j) {
                 T res = 0;
                 for (int k = 0; k < col; ++k) {
-                    res = res+ matrix[i*col+k] * other.matrix[j+k*other.col];
+                    res = res+ matrix[i*col+k] * other.getMatrix()[j+k*other.getCol()];
                 }
-                result.matrix[i*other.col+j] = res;
+                result.matrix[i*other.getCol()+j] = res;
             }
         }
         return result;
@@ -228,7 +269,7 @@ public:
     template <typename T1>
     N_Matrix dot_product(const N_Matrix<T1>& other){
         try {
-            if ((col != other.col) || (row != other.row))
+            if ((col != other.getCol()) || (row != other.getRow()))
                 throw SizeException(4);
         }catch (SizeException& e){
             cerr<<e.what();
@@ -248,16 +289,15 @@ public:
 
     template <typename T1>
     N_Matrix convolution(N_Matrix<T1> & core){
-        int row_cnt = row+(core.row/2)*2;
-        int col_cnt = col+(core.col/2)*2;
+        int row_cnt = row+(core.getRow()/2)*2;
+        int col_cnt = col+(core.getCol()/2)*2;
         T * augment = new T [row_cnt*col_cnt];
-        //rotate 180
-        N_Matrix<T1> rot = core.rotate();
+
         //make up 0
         for (int i = 0; i < row_cnt; ++i) {
             for (int j = 0; j < col_cnt; ++j) {
-                if (i<core.row/2 | i>=core.row/2+row | j<core.col/2 | j>=core.col/2+col) augment[i * col_cnt + j] = 0;
-                else augment[i * col_cnt + j] = matrix[(i - core.row/2) * col + (j - core.col/2)];
+                if (i<core.getRow()/2 | i>=core.getRow()/2+row | j<core.getCol()/2 | j>=core.getCol()/2+col) augment[i * col_cnt + j] = 0;
+                else augment[i * col_cnt + j] = matrix[(i - core.getRow()/2) * col + (j - core.getCol()/2)];
             }
         }
 
@@ -265,11 +305,11 @@ public:
         for (int i = 0; i < row; ++i) {
             for (int j = 0; j < col; ++j) {
                 T res = 0;
-                for (int k = 0; k < core.row; ++k) {
-                    for (int l = 0; l < core.col; ++l) {
+                for (int k = 0; k < core.getRow(); ++k) {
+                    for (int l = 0; l < core.getCol(); ++l) {
                         int b_row = i+k;
                         int b_col = j+l;
-                        res += core.matrix[k*core.col+l]*augment[(i+k)*col_cnt+j+l];
+                        res += core.getMatrix()[k*core.getCol()+l]*augment[(i+k)*col_cnt+j+l];
                     }
                 }
                 result.matrix[i*col+j] = res;
@@ -458,7 +498,8 @@ public:
         N_Matrix result{newRow, col};
         for (int i = 0; i < newRow; i++) {
             for (int j = 0; j < col; j++) {
-                result.matrix[i * col + j] = matrix[(startRow + i) * col + j];
+                // result.matrix[i * col + j] = matrix[(startRow + i) * col + j];
+                result.modifyVal(i,j,matrix[(startRow + i) * col + j]);
             }
         }
         return result;
@@ -476,7 +517,8 @@ public:
         N_Matrix result{row, newCol};
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < newCol; j++) {
-                result.matrix[i * newCol + j] = matrix[i * col + j + startCol];
+                //result.matrix[i * newCol + j] = matrix[i * col + j + startCol];
+                result.modifyVal(i,j,matrix[i * col + j + startCol]);
             }
         }
         return result;
@@ -495,6 +537,7 @@ public:
 
         return sliceByRow(a,b).sliceByCol(c,d);
     }
+
 
     T getDet(){
         try {
@@ -573,28 +616,29 @@ public:
         nmatrixArr[0]=sliceByCol(0,0);
         for(int i=1;i<col;i++){
             nmatrixArr[i]=sliceByCol(i,i);
-            N_Matrix temp=nmatrixArr[0].scalar_product((nmatrixArr[0].transposition()*nmatrixArr[i]/((nmatrixArr[0].transposition()*nmatrixArr[0]).matrix[0])).matrix[0]);
+            N_Matrix temp=nmatrixArr[0].scalar_product((nmatrixArr[0].transposition()*nmatrixArr[i]/((nmatrixArr[0].transposition()*nmatrixArr[0]).getValue(0,0))).getValue(0,0));
             for(int j=1;j<i;j++){
-                temp=temp+nmatrixArr[j].scalar_product((nmatrixArr[j].transposition()*nmatrixArr[i]/((nmatrixArr[j].transposition()*nmatrixArr[j]).matrix[0])).matrix[0]);
+                temp=temp+nmatrixArr[j].scalar_product((nmatrixArr[j].transposition()*nmatrixArr[i]/((nmatrixArr[j].transposition()*nmatrixArr[j]).getValue(0,0))).getValue(0,0));
             }
             nmatrixArr[i]=nmatrixArr[i]-temp;
         }
 
 
         for(int i=0;i<col;i++){
-            T sum=nmatrixArr[i].matrix[0]*nmatrixArr[i].matrix[0];
+            T sum=nmatrixArr[i].getValue(0,0)*nmatrixArr[i].getValue(0,0);
             for(int j=1;j<col;j++){
-                sum=sum+nmatrixArr[i].matrix[j]*nmatrixArr[i].matrix[j];
+                sum=sum+nmatrixArr[i].getValue(j,0)*nmatrixArr[i].getValue(j,0);
             }
             sum=sqrt(sum);
             for(int j=0;j<col;j++){
-                nmatrixArr[i].modifyVal(j,0,nmatrixArr[i].matrix[j]/sum);
+                nmatrixArr[i].modifyVal(j,0,nmatrixArr[i].getValue(j,0)/sum);
             }
         }
         N_Matrix Q(col,col);
         for(int i=0;i<col;i++){
             for(int j=0;j<col;j++){
-                Q.matrix[i*col+j]=nmatrixArr[j].matrix[i];
+                //Q.matrix[i*col+j]=nmatrixArr[j].matrix[i];
+                Q.modifyVal(i,j,nmatrixArr[j].getValue(i,0));
             }
         }
         return Q;
@@ -628,7 +672,8 @@ public:
 
         while(!(det-0>0.01)&&((det-0>-0.01))){
             for(int i=0;i<col;i++){
-                copy.matrix[i*col+i]=copy.matrix[i*col+i]+1;
+                //copy.matrix[i*col+i]=copy.matrix[i*col+i]+1;
+                copy.modifyVal(i,i,copy.getValue(i,i)+1);
             }
             offset++;
             det=copy.getDet();
@@ -642,7 +687,8 @@ public:
             count++;
         }
         for(int i=0;i<col;i++){
-            copy.matrix[i*col+i]=copy.matrix[i*col+i]+offset*(-1);
+            // copy.matrix[i*col+i]=copy.matrix[i*col+i]+offset*(-1);
+            copy.modifyVal(i,i,copy.getValue(i,i)+offset*(-1));
         }
 
         return copy;
@@ -655,7 +701,7 @@ public:
 
         N_Matrix value=getEigenValue();
         for(int t=0;t<col;t++){
-            T offset=value.matrix[(t)*col+t]+0.1;
+            T offset=value.getValue(t,t)+0.1;
             T det=(*this-I.scalar_product(offset)).getDet();
 
             while(!(det-0>0.01)&&((det-0>-0.01))){
@@ -668,7 +714,8 @@ public:
 
             N_Matrix V(row,1);
             for(int i=0;i<row;i++){
-                V.matrix[i]=i + 1;
+                //V.matrix[i]=i + 1;
+                V.modifyVal(i,0,i+1);
             }
             int count=0;
             while(count<200){
@@ -676,12 +723,14 @@ public:
 
                 T modulu=V.getModulu();
                 for(int i=0;i<row;i++){
-                    V.matrix[i]=V.matrix[i]/modulu;
+                    //V.matrix[i]=V.matrix[i]/modulu;
+                    V.modifyVal(i,0,V.getValue(i,0)/modulu);
                 }
                 count++;
             }
             for(int i=0;i<row;i++){
-                vec.matrix[i*col+t]=V.matrix[i];
+                //vec.matrix[i*col+t]=V.matrix[i];
+                vec.modifyVal(i,t,V.getValue(i,0));
             }
         }
         return vec;
@@ -692,9 +741,9 @@ public:
         for(int i=0;i<row;i++){
             for(int j=0;j<col;j++){
                 if(i==j){
-                    result.matrix[i*col+j]=1;
+                    result.modifyVal(i,j,1);
                 }else{
-                    result.matrix[i*col+j]=0;
+                    result.modifyVal(i,j,0);
                 }
             }
         }
@@ -755,9 +804,9 @@ public:
             for(int i=t+1;i<row;i++){
                 x.modifyVal(i,0,result.matrix[i*col+t]);
             }
-            T length=x.matrix[t+1]*x.matrix[t+1];
+            T length=x.getValue(t+1,0)*x.getValue(t+1,0);
             for(int i=t+2;i<row;i++){
-                length=length+x.matrix[i]*x.matrix[i];
+                length=length+x.getValue(i,0)*x.getValue(i,0);
             }
             length=sqrt(length);
             for(int i=0;i<row;i++){
@@ -767,10 +816,10 @@ public:
                     w.modifyVal(i,0,length);
                 }
             }
-            if(x.matrix[0]>0) x=x.scalar_product(-1);
+            if(x.getValue(0,0)>0) x=x.scalar_product(-1);
             v=w+x;
             if(v.getLength()-0>0.0001) {
-                H = v * v.transposition() / ((v.transposition() * v).matrix[0]);
+                H = v * v.transposition() / ((v.transposition() * v).getValue(0,0));
                 H = H.scalar_product(-2);
                 for (int i = 0; i < row; i++) {
                     H.modifyVal(i, i, H.matrix[i * col + i] + 1);
@@ -793,18 +842,69 @@ public:
         return c > 0? c : c*(-1);
     }
 
-    Mat toOpenCVMat(){
-        Mat img{row,col,CV_8U, Scalar::all(0)};
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < col; j++){
-                img.at<uchar>(i, j) = matrix[i*col+j] > 255 ? 255:
-                                      (matrix[i*col+j] < 0? 0 : (unsigned char)matrix[i*col+j]);
+    Mat toOpenCVMat(int color){
+        if(color == 0){
+            Mat img{row,col,CV_8U, Scalar::all(0)};
+            for(int i = 0; i < row; i++){
+                for(int j = 0; j < col; j++){
+                    img.at<uchar>(i, j) = matrix[i*col+j] > 255 ? 255:
+                                          (matrix[i*col+j] < 0? 0 : (unsigned char)matrix[i*col+j]);
+                }
             }
+            return img;
+        }else{
+            Mat img{row,col / 3,CV_8UC3, Scalar::all(0)};
+            for(int i = 0; i < row; i++){
+                for(int j = 0; j < col / 3; j++){
+                    Vec3b pixel;
+                    pixel[0] = matrix[i * col + 3 * j] > 255? 255 :
+                               (matrix[i * col + 3 * j] < 0? 0 :
+                               matrix[i * col + 3 * j]);
+                    pixel[1] = matrix[i * col + 3 * j + 1] > 255? 255 :
+                               (matrix[i * col + 3 * j + 1] < 0? 0 :
+                               matrix[i * col + 3 * j + 1]);
+                    pixel[2] = matrix[i * col + 3 * j + 2] > 255? 255 :
+                               (matrix[i * col + 3 * j + 2] < 0? 0 :
+                               matrix[i * col + 3 * j + 2]);
+                    img.at<Vec3b>(i, j) = pixel;
+                }
+            }
+            return img;
         }
-        return img;
+
     }
 };
 
+template <typename T>
+void fromRGB(const Mat& img, N_Matrix<T>& r, N_Matrix<T>& g, N_Matrix<T>& b){
+    N_Matrix<int> a{img,1};
 
+    int row = a.getRow(), col = a.getCol() / 3;
+    r.setSize(row, col);
+    g.setSize(row, col);
+    b.setSize(row, col);
+
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j < col; j++){
+            b.modifyVal(i,j,a.getValue(i, 3 * j));
+            g.modifyVal(i,j,a.getValue(i, 3 * j + 1));
+            r.modifyVal(i,j,a.getValue(i, 3 * j + 2));
+        }
+    }
+}
+
+template <typename T>
+Mat toRGB(const N_Matrix<T>& r, const N_Matrix<T>& g, const N_Matrix<T>& b){
+    N_Matrix<int> dst{b.getRow(), 3 * b.getCol()};
+
+    for(int i = 0; i < b.getRow(); i++){
+        for(int j = 0; j < b.getCol(); j++){
+            dst.modifyVal(i, 3 * j, b.getValue(i,j));
+            dst.modifyVal(i, 3 * j + 1, g.getValue(i,j));
+            dst.modifyVal(i, 3 * j + 2, r.getValue(i,j));
+        }
+    }
+    return dst.toOpenCVMat(1);
+}
 
 #endif //PROJECT_N_MATRIX_HPP
