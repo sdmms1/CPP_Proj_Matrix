@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include "N_Matrix.hpp"
+#include <ostream>
 using namespace std;
 using namespace cv;
 
@@ -18,8 +19,8 @@ int main(){
         return -1;
     }
 
-    testTrans();
-//    testConvolution();
+//    testTrans();
+    testConvolution();
 
 };
 
@@ -41,8 +42,8 @@ void testConvolution(){
     N_Matrix<double> a{img};
 
     double kernel[] = {
-//            1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9
-            -1,2,-1,0,0,0,-1,2,-1
+            1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9,1.0/9
+//            -1,2,-1,0,0,0,-1,2,-1
 //            0,-1,0,-1,9,-1,0,-1,0
 //            0,-1,0,-1,4,-1,0,-1,0
     };

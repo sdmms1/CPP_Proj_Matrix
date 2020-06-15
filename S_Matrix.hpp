@@ -6,7 +6,6 @@
 #define PROJECT_S_MATRIX_HPP
 
 #include <iostream>
-#include "N_Matrix.hpp"
 
 using namespace std;
 
@@ -14,8 +13,8 @@ using namespace std;
 template<typename T>
 class S_Matrix {
 public:
-    int col;
-    int row;
+    int col{};
+    int row{};
     T *values;
     int *col_idx;
     int *row_offsets;
