@@ -25,6 +25,7 @@ struct SizeException:public exception{
         else if(type==8) return "The matrix size does not support getting trace operation";
         else if(type==9) return "The matrix size does not support cross product operation (need row-column==1";
         else if(type==10) return "Exception! not invertible!";
+        else if(type==11) return "Invalid size of matrix!";
         else return "Undefined exception!";
     }
 };
@@ -40,8 +41,8 @@ struct IndexOutOfRange:public exception{
 template <class T>
 class N_Matrix {
 private:
-    int col{};
-    int row{};
+    int col;
+    int row;
     T * matrix;
 public:
     int getCol() const {
@@ -53,6 +54,13 @@ public:
     }
 
     void setSize(int row, int col){
+        try{
+            if(row <= 0 || col <= 0)
+                throw SizeException(11);
+        }catch (SizeException& e){
+            cerr<<e.what();
+            abort();
+        }
         this->row = row;
         this->col = col;
         delete[] matrix;
@@ -68,6 +76,13 @@ public:
     }
 
     explicit N_Matrix(int row = 1,int col = 1){
+        try{
+            if(row <= 0 || col <= 0)
+                throw SizeException(11);
+        }catch (SizeException& e){
+            cerr<<e.what();
+            abort();
+        }
         this->row = row;
         this->col = col;
         matrix = new T[col*row];

@@ -105,4 +105,10 @@ int main() {
     f.reShape(8,2);
     f.printMatrix();
 
+    //exception
+    (e * f).printMatrix();
+    (e.crossProduct()).printMatrix();
+    e.reShape(2,4);
+    e.reShape(1,9);
+    e.getDet();
 }
